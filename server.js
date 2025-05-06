@@ -30,7 +30,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-//setting up session and saving it to mongo 
+//setting up session and saving it to mongo
 app.use(
   session({
     secret: process.env.NODE_SESSION_SECRET,
@@ -119,7 +119,9 @@ app.post("/login", async (req, res) => {
 
   const user = await userCollection.findOne({ email: req.body.email });
   if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
-    return res.send("Invalid email/password combination. <br /> <a href='/login'>Try again</a>");
+    return res.send(
+      "Invalid email/password combination. <br /> <a href='/login'>Try again</a>"
+    );
   }
 
   req.session.user = { name: user.name };
@@ -136,6 +138,7 @@ app.get("/members", requireLogin, (req, res) => {
 //logs user out and destyoys the session
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
+    res.clearCookie("connect.sid");
     res.redirect("/");
   });
 });
