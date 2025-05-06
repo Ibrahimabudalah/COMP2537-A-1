@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+</head>
+
+<body>
+    <% if (!user) { %>
+        <div class="button-container">
+            <a href="/signup">
+                <button>Sign Up</button>
+            </a>
+            <br />
+            <a href="/login">
+                <button>Login</button>
+            </a>
+        </div>
+
+        <% } else { %>
+            <h2>Hello, <%= username %>
+            </h2>
+            <div>
+                <a href="/members">
+                    <button>Members</button>
+                </a>
+                <br />
+                <a href="/logout">
+                    <button>Logout</button>
+                </a>
+            </div>
+            <% } %>
+</body>
+
+</html>
