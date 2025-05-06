@@ -1,6 +1,7 @@
 Self-graded Assignment 1 Checklist
 ======
-
+# Student Name: Ibrahim Abudalah 
+# Student Set: 1C 
     Criteria	
     
 - [x]  A home page links to signup and login, if not logged in; and links to members and signout, if logged in.
