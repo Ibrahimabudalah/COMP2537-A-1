@@ -1,4 +1,4 @@
-Self-graded Assignment 1 Checklist
+Self-graded Assignment 2 Checklist
 ======
 # Student Name: Ibrahim Abudalah 
 # Student Set: 1C 
