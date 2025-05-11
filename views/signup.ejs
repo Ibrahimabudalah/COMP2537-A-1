@@ -1,20 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("templates/header") %>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign Up</title>
-</head>
-
-<body>
-    <p>create user</p>
+    <h2>Sign Up</h2>
     <form method="POST">
-        Name: <input name="name"><br>
-        Email: <input name="email" type="email"><br>
-        Password: <input name="password" type="password"><br>
-        <button type="submit">Submit</button>
+        <div class="mb-3">
+            <label>Name:</label>
+            <input name="name" type="text" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Email:</label>
+            <input name="email" type="email" class="form-control" required />
+        </div>
+        <div class="mb-3">
+            <label>Password:</label>
+            <input name="password" type="password" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
     </form>
-</body>
 
-</html>
+    <%- include("templates/footer") %>

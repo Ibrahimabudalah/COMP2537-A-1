@@ -1,0 +1,13 @@
+<%- include("templates/header") %>
+
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <ul class="list-group">
+        <% users.forEach(user=> { %>
+            <%- include('templates/user', { user: user }) %>
+                <% }) %>
+    </ul>
+
+    <a href="/members" class="btn btn-secondary mt-4">Back to Members</a>
+
+    <%- include("templates/footer") %>

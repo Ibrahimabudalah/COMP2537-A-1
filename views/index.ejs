@@ -1,37 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("templates/header") %>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-</head>
-
-<body>
     <% if (!user) { %>
-        <div class="button-container">
-            <a href="/signup">
-                <button>Sign Up</button>
-            </a>
-            <br />
-            <a href="/login">
-                <button>Login</button>
-            </a>
+        <div class="text-center">
+            <a href="/signup" class="btn btn-primary m-2">Sign Up</a>
+            <a href="/login" class="btn btn-secondary m-2">Login</a>
         </div>
-
         <% } else { %>
-            <h2>Hello, <%= username %>
+            <h2>Hello, <%= user.name %>
             </h2>
-            <div>
-                <a href="/members">
-                    <button>Members</button>
-                </a>
-                <br />
-                <a href="/logout">
-                    <button>Logout</button>
-                </a>
-            </div>
+            <a href="/members" class="btn btn-primary m-2">Members</a>
+            <a href="/logout" class="btn btn-danger m-2">Logout</a>
             <% } %>
-</body>
 
-</html>
+                <%- include("templates/footer") %>

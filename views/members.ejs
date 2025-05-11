@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include("templates/header") %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members</title>
-</head>
+    <h2>Hello, <%= name %>
+    </h2>
+    <div class="row">
+        <% images.forEach(image=> { %>
+            <div class="col-12 col-md-4 mb-3">
+                <img src="/<%= image %>" class="img-fluid rounded" alt="Image" />
+            </div>
+            <% }) %>
+    </div>
+    <a href="/logout" class="btn btn-danger mt-3">Logout</a>
 
-<body>
-    <h1>Hello, <%= name %>
-    </h1>
-    <img src="/<%= image %>" alt="Random image" width="300">
-    <br>
-    <a href="/logout">
-        <button>Log Out</button>
-    </a>
-</body>
-
-</html>
+    <%- include("templates/footer") %>

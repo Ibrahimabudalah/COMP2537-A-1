@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const path = require("path");
@@ -47,7 +47,15 @@ app.use(
 
 //middleware to protect routes
 function requireLogin(req, res, next) {
-  if (!req.session.user) return res.redirect("/");
+  if (!req.session.user) return res.redirect("/login");
+  next();
+}
+
+//middleware to protect admin route
+function requireAdmin(req, res, next) {
+  if (!req.session.user || req.session.user.user_type !== "admin") {
+    return res.status(403).send("403 Forbidden: Admins only.");
+  }
   next();
 }
 
@@ -84,13 +92,19 @@ app.post("/signup", async (req, res) => {
 
   const hashed = await bcrypt.hash(req.body.password, 10);
 
-  await userCollection.insertOne({
+  const newUser = {
     name: req.body.name,
     email: req.body.email,
     password: hashed,
-  });
+    user_type: "user",
+  };
 
-  req.session.user = { name: req.body.name };
+  await userCollection.insertOne(newUser);
+
+  req.session.user = {
+    name: newUser.name,
+    user_type: newUser.user_type,
+  };
   res.redirect("/members");
 });
 
@@ -124,15 +138,17 @@ app.post("/login", async (req, res) => {
     );
   }
 
-  req.session.user = { name: user.name };
+  req.session.user = { name: user.name, user_type: user.user_type };
   res.redirect("/members");
 });
 
-//serves up random image on members page
+//serves up the 3 images on members page
 app.get("/members", requireLogin, (req, res) => {
   const images = ["react.png", "nextjs.png", "ejs.png"];
-  const img = images[Math.floor(Math.random() * images.length)];
-  res.render("members", { name: req.session.user.name, image: img });
+  res.render("members", {
+    name: req.session.user.name,
+    images: images,
+  });
 });
 
 //logs user out and destyoys the session
@@ -141,6 +157,34 @@ app.get("/logout", (req, res) => {
     res.clearCookie("connect.sid");
     res.redirect("/");
   });
+});
+
+//route for admin page and if user is not admin, renders 403 page
+app.get("/admin", requireLogin, async (req, res) => {
+  if (req.session.user.user_type !== "admin") {
+    return res.status(403).render("403");
+  }
+
+  const users = await userCollection.find().toArray();
+  res.render("admin", { users });
+});
+
+//promote user
+app.get("/promote/:id", requireAdmin, async (req, res) => {
+  await userCollection.updateOne(
+    { _id: new ObjectId(req.params.id) },
+    { $set: { user_type: "admin" } }
+  );
+  res.redirect("/admin");
+});
+
+//demote user
+app.get("/demote/:id", requireAdmin, async (req, res) => {
+  await userCollection.updateOne(
+    { _id: new ObjectId(req.params.id) },
+    { $set: { user_type: "user" } }
+  );
+  res.redirect("/admin");
 });
 
 //render for 404 page
